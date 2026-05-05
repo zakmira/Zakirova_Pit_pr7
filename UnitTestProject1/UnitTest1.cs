@@ -1,5 +1,6 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
+using Hill;
 
 namespace UnitTestProject1
 {
@@ -10,19 +11,24 @@ namespace UnitTestProject1
         public void TestEncryptBigram()
         {
             string text = "ПР";
-            int[,] key = { { 3, 2 }, { 5, 7 } };
-            string encrypted = Hill.Encrypt(text, key);
+            int[,] key = { { 1, 2 }, { 3, 4 } };
+
+            string encrypted = HillCipher.Encrypt(text, key);
+
             Assert.IsNotNull(encrypted);
             Assert.AreNotEqual(text, encrypted);
+            Assert.AreEqual(text.Length, encrypted.Length);
         }
 
         [TestMethod]
         public void TestDecryptBigram()
         {
             string text = "ПР";
-            int[,] key = { { 3, 2 }, { 5, 7 } };
-            string encrypted = Hill.Encrypt(text, key);
-            string decrypted = Hill.Decrypt(encrypted, key);
+            int[,] key = { { 1, 2 }, { 3, 4 } };
+
+            string encrypted = HillCipher.Encrypt(text, key);
+            string decrypted = HillCipher.Decrypt(encrypted, key);
+
             Assert.AreEqual(text, decrypted);
         }
 
@@ -31,8 +37,9 @@ namespace UnitTestProject1
         public void TestEncryptWrongLength()
         {
             string text = "ПРИ";
-            int[,] key = { { 3, 2 }, { 5, 7 } };
-            Hill.Encrypt(text, key);
+            int[,] key = { { 1, 2 }, { 3, 4 } };
+
+            HillCipher.Encrypt(text, key);
         }
 
         [TestMethod]
@@ -41,16 +48,17 @@ namespace UnitTestProject1
         {
             string text = "ПР";
             int[,] key = { { 2, 4 }, { 1, 2 } };
-            Hill.Encrypt(text, key);
+
+            HillCipher.Encrypt(text, key);
         }
 
         [TestMethod]
-        public void TestEncryptDetCheck()
+        public void TestEncryptDetAndModule()
         {
             string text = "ПР";
-            int[,] key = { { 1, 2 }, { 3, 4 } };
-            string encrypted = Hill.Encrypt(text, key);
-            Assert.IsNotNull(encrypted);
+            int[,] key = { { 3, 6 }, { 1, 3 } };
+
+            HillCipher.Encrypt(text, key);
         }
 
         [TestMethod]
@@ -58,8 +66,9 @@ namespace UnitTestProject1
         public void TestEncryptEmpty()
         {
             string text = "";
-            int[,] key = { { 3, 2 }, { 5, 7 } };
-            Hill.Encrypt(text, key);
+            int[,] key = { { 1, 2 }, { 3, 4 } };
+
+            HillCipher.Encrypt(text, key);
         }
 
         [TestMethod]
@@ -67,16 +76,19 @@ namespace UnitTestProject1
         public void TestEncryptInvalid()
         {
             string text = "ПР1ВЕТ";
-            int[,] key = { { 3, 2 }, { 5, 7 } };
-            Hill.Encrypt(text, key);
+            int[,] key = { { 1, 2 }, { 3, 4 } };
+
+            HillCipher.Encrypt(text, key);
         }
 
         [TestMethod]
         public void TestEncryptTrigram()
         {
             string text = "ПРИ";
-            int[,] key = { { 6, 24, 1 }, { 13, 16, 10 }, { 20, 17, 15 } };
-            string encrypted = Hill.Encrypt(text, key);
+            int[,] key = { { 1, 1, 0 }, { 0, 1, 1 }, { 1, 0, 1 } };
+
+            string encrypted = HillCipher.Encrypt(text, key);
+
             Assert.IsNotNull(encrypted);
             Assert.AreNotEqual(text, encrypted);
         }
@@ -85,41 +97,50 @@ namespace UnitTestProject1
         public void TestEncryptDecrypt()
         {
             string text = "ПРИВЕТ";
-            int[,] key = { { 3, 2 }, { 5, 7 } };
-            string encrypted = Hill.Encrypt(text, key);
-            string decrypted = Hill.Decrypt(encrypted, key);
+            int[,] key = { { 1, 2 }, { 3, 4 } };
+
+            string encrypted = HillCipher.Encrypt(text, key);
+            string decrypted = HillCipher.Decrypt(encrypted, key);
+
             Assert.AreEqual(text, decrypted);
         }
 
-        [TestMethod]
-        public void TestDecryptUnencryptedText()
+        public void TestIgnoreSpaces()
         {
-            string text = "ПРИВЕТ";
-            int[,] key = { { 3, 2 }, { 5, 7 } };
-            string result = Hill.Decrypt(text, key);
-            Assert.AreNotEqual(text, result);
+            string textSpace = "П Р И В Е Т";
+            string textNoSpace = "ПРИВЕТ";
+            int[,] key = { { 1, 2 }, { 3, 4 } };
+
+            string encryptedSpace = HillCipher.Encrypt(textSpace, key);
+            string encryptedNoSpace = HillCipher.Encrypt(textNoSpace, key);
+
+            Assert.AreEqual(encryptedSpace, encryptedNoSpace);
         }
 
         [TestMethod]
-        public void TestReEncryptText()
+        public void TestNegativeMatrix()
         {
-            string original = "ПРИВЕТ";
-            int[,] key = { { 3, 2 }, { 5, 7 } };
-            string encrypted1 = Hill.Encrypt(original, key);
-            string encrypted2 = Hill.Encrypt(encrypted1, key);
-            Assert.AreNotEqual(encrypted1, encrypted2);
-            Assert.AreNotEqual(original, encrypted2);
+            string text = "ПР";
+            int[,] key = { { -1, 2 }, { 3, -4 } };
+
+            string encrypted = HillCipher.Encrypt(text, key);
+            string decrypted = HillCipher.Decrypt(encrypted, key);
+
+            Assert.IsNotNull(encrypted);
+            Assert.AreEqual(text, decrypted);
         }
 
         [TestMethod]
         public void TestValidationLogic()
         {
-            int[,] validKey = { { 3, 2 }, { 5, 7 } };
-            int[,] invalidKey = { { 2, 4 }, { 1, 2 } };
+            int[,] validKey = { { 1, 2 }, { 3, 4 } };
+            int[,] zeroDetKey = { { 2, 4 }, { 1, 2 } };
+            int[,] notCoprimeKey = { { 3, 6 }, { 1, 3 } };
 
-            Assert.ThrowsException<ArgumentException>(() => Hill.Encrypt("", validKey));
-            Assert.ThrowsException<ArgumentException>(() => Hill.Encrypt("АБ", invalidKey));
-            Assert.ThrowsException<ArgumentException>(() => Hill.Encrypt("А1Б", validKey));
+            Assert.ThrowsException<ArgumentException>(() => HillCipher.Encrypt("", validKey));
+            Assert.ThrowsException<ArgumentException>(() => HillCipher.Encrypt("ПР", zeroDetKey));
+            Assert.ThrowsException<ArgumentException>(() => HillCipher.Encrypt("ПР", notCoprimeKey));
+            Assert.ThrowsException<ArgumentException>(() => HillCipher.Encrypt("ПР1ВЕТ", validKey));
         }
     }
 }

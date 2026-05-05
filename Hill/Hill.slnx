@@ -1,3 +1,4 @@
 <Solution>
-  <Project Path="Hill.csproj" />
+  <Project Path="../UnitTestProject1/UnitTestProject1.csproj" Id="a8177f54-7cfd-40c3-b5a7-155ac3131aa1" />
+  <Project Path="Hill.csproj" Id="141f4569-c578-46fe-a57a-2f3fa0cb0cbb" />
 </Solution>
