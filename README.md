@@ -7,8 +7,7 @@
 
 Диаграмма вариантов использования:<img width="571" height="186" alt="Диаграмма вариантов использования (ПР 7 2)" src="https://github.com/user-attachments/assets/b18c3c90-6d95-4cdf-97f3-bf125010fae6" />
 
-Тестовые сценарии: [Тестовые сценарии (ПР 7.2).docx](https://github.com/user-attachments/files/27442395/7.2.docx)
-
+Тестовые сценарии: [Тестовые сценарии (ПР 7.2).docx](https://github.com/user-attachments/files/27442629/7.2.docx)
 
 Перечень средств отладки:
 - Точка останова;
