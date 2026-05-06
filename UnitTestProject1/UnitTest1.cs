@@ -53,6 +53,7 @@ namespace UnitTestProject1
         }
 
         [TestMethod]
+        [ExpectedException(typeof(ArgumentException))]
         public void TestEncryptDetAndModule()
         {
             string text = "ПР";

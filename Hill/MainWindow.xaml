@@ -155,7 +155,7 @@
             <Label Content="Результат:" FontWeight="Bold"
                    HorizontalAlignment="Center"/>
             <TextBox x:Name="Result" 
-                     Width="180" Height="40"
+                     Width="180" Height="60"
                      TextWrapping="Wrap" 
                      IsReadOnly="True" 
                      Background="#F0F0F0"

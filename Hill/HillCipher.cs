@@ -27,7 +27,7 @@ namespace Hill
 
             int blockSize = key.GetLength(0);
             if (text.Length % blockSize != 0)
-                throw new ArgumentException($"Длина текста должна быть кратна ({blockSize}).");
+                throw new ArgumentException($"Длина текста должна быть кратна {blockSize}");
 
             return ProcessText(text, key);
         }
@@ -68,7 +68,7 @@ namespace Hill
                 if (det == 0)
                     throw new ArgumentException("Ключевая матрица необратима (det = 0)");
                 else
-                    throw new ArgumentException($"Ключевая матрица необратима (НОД(det, {Modules}) != 1)");
+                    throw new ArgumentException($"Ключевая матрица необратима\n(НОД(det, {Modules}) != 1)");
             }
         }
 
